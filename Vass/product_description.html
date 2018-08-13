@@ -1,0 +1,55 @@
+<!DOCTYPE>
+<html>
+<head>
+	<style type="text/css">
+	.divClass{
+	float:left;
+    width: 25%;
+    padding:75px;
+}
+.buttonCls{
+	background-color: green;
+	width:120px;
+	height: 30px;
+}
+	</style>
+	<script>
+function bigImg(x) {
+    x.style.height = "800px";
+    x.style.width = "800px";
+}
+
+function normalImg(x) {
+    x.style.height = "400px";
+    x.style.width = "400px";
+}
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+		<script type="text/javascript">
+		var app=angular.module('angularApp1',[]);
+		app.controller('angularcntrl1',function($scope,$filter,$log,$http){
+			$scope.sampleFunc=function(){
+			 	alert("added to cart");
+			}
+		});
+		</script>
+</head>
+<body>
+	<div>
+		<div class="divClass"><img onmouseover="bigImg(this)" onmouseout="normalImg(this)" src="apple5s.png" alt="image is loading.. wait"/></div>
+		<div class="divClass">
+			<table>
+				<tr><th>Apple Iphone 5s</th></tr>
+				<tr><td><h4>1900 people viewd this product</h4></td></tr>
+				<tr><td><hr></td></tr>
+				<tr><td>Sold by Rocket Kommerce LLP (4.7 out of 5 | 26,133 ratings) and Fulfilled by Vass Online SHopping</td></tr>
+				<tr><br></tr>
+				<tr><br></tr>
+				<tr><br></tr></table><br/><br/>
+				<div ng-app="angularApp1" ng-controller="angularcntrl1">
+				<button ng-click="sampleFunc()" class="buttonCls" ng-click="sampleFunc()">add to cart</button>
+			</div>
+			</div>
+		</div>
+	</body>
+	</html>

@@ -1,0 +1,55 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+  <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js">
+      </script>
+    
+      <script>
+        var app = angular.module('loginapp',[]);
+    app.controller('logincontroller', function($scope, z$http) {
+      $scope.sendData = function(){
+      $http.get('http://10.177.2.37:8080/user/login/'+$scope.email+'/'+$scope.password).then(function(response){
+        if(response.data) {
+          alert("Logged in successfull!!!");
+        }
+        else {
+          alert("Invalid credentials");
+          sessionStorage.username = $scope.email;
+          window.location= "/Users/salipalli.swathi/Documents/Vass/login.html"
+        }
+        });
+      }
+    });
+      </script>
+        <link rel = "stylesheet" href = "/Users/salipalli.swathi/Documents/Vass/login.css">
+    </head>
+    <body align = "center">
+      <h2>Login Form</h2>
+      <form ng-app = "loginapp" ng-controller = "logincontroller" name = "loginform" align = "center">
+      <div name = "logindiv" class="container">
+
+        <label><b>E-mail Id</b></label> <br>
+
+        <input type="email" placeholder="Enter E-mail" ng-model="email" required> <br>
+        <span ng-show="loginform.logindiv.$invalid"></span>
+
+
+        <label><b>Password</b></label><br>
+
+        <input type="password" placeholder="Enter Password" ng-model="password" required><br><br>
+         <span ng-show="loginform.logindiv.$invalid"></span>
+
+        <button type="submit" ng-click = sendData()>Login</button>
+
+      </div>
+
+    </form>
+
+    <div class = "signup"  align = "center">
+        New User? <br>
+    <button type  ="submit" onclick="window.location = '/Users/salipalli.swathi/Documents/Vass/signup.html'"> Create User Account </button>
+
+    </div>
+  </body>
+
+  </html>

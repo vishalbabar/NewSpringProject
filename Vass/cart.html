@@ -1,0 +1,53 @@
+	<html ng-app="myApp">
+	<head>
+		<link rel="stylesheet" type="text/css" href="cart.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('MainCtrl', function($scope) {
+			$scope.user = {
+				websites: [
+				{}
+				]
+			};
+			$scope.remove = function(index) {
+				$scope.user.websites.splice(index, 1);
+			};
+			$scope.add = function() {
+				$scope.user.websites.push({ });
+			};
+		});
+	</script>
+</head>
+<body>
+	<div class="cart">
+	</div>
+	<div class="cart12">
+		<form name="cartservice">
+			<div class="cart1"></div>
+			<div ng-app="myApp" ng-controller="MainCtrl" >
+	  <div class="input-append" ng-repeat="website in user.websites">
+	  	<div   class="cart3" >
+	  		<table  width="100%" >
+	  			<div><th>Product Name</th></div>
+	  			<div><th>Merchant Name</th></div>
+	  			<div><th>Price</th></div>
+	  			<div><th>Quantity</th></div>
+	  			<tr align="center">
+	  				<td>iPhone 5s</td>
+	  				<td>Sold By <br>Vass Electronics</td>
+	  				<td>25000</td>
+	  				<td><input type="number" min="0"/></td>
+	  				<td><button>Update Quantity</button></td>
+	  				<td><button>BuyNow</button></td>
+	  				<td><button class="btn" ng-click="remove($index)">Remove</button></td>
+	  				<td><button class="btn btn-small" ng-click="add()">Add</button></td>
+	  			</tr>
+	  		</table>
+	  	</div>
+	  </div>
+	</div>
+</form>
+</div>
+</body>
+</html>

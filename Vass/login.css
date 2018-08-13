@@ -1,0 +1,38 @@
+body {font-family: Arial;}
+
+form {
+    width : 100%; 
+    border: 3px solid #f1f1f1;
+}
+
+input{
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #808000;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px;
+    border: 2px;
+    cursor: pointer;
+    width: 25%;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.container {
+    align-self: "center";
+    padding: 16px;
+}
+
+.signup {
+    padding : 18px;
+}

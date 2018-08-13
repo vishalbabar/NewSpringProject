@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel = "stylesheet" href = "/Users/salipalli.swathi/Documents/Vass/login.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js">
+    </script>
+    <script>
+        // if (typeof(Storage) !== "undefined") {
+        //   localStorage.setItem("lastname", "Smith");  
+        // } 
+          var app = angular.module('signupapp',[]);
+          app.controller('signupcontroller', function($scope, $http){
+            $scope.sendData = function(){
+            var data = {
+              userId : "1",
+              firstName : $scope.firstname,
+              lastName : $scope.lastname,
+              phoneNumber : $scope.phoneNumber,
+              emailId : $scope.email,
+              password : $scope.password
+            }
+            $http.post('http://10.177.2.37:8080/user/signup/', data, {header: {Accept: "text/plain; charset=utf-8"}}).then(function(response){
+              if(response.data) {
+                alert("Created account successfully!!!");
+              }
+              else {
+                alert("Try Again!!!");
+                window.location="/Users/salipalli.swathi/Documents/Vass/signup.html";
+              }
+            });
+          }
+        });
+        app.config(['$qProvider', function ($qProvider) {
+        $qProvider.errorOnUnhandledRejections(false);
+        }]);
+    </script>
+</head>
+
+<body align = "center">
+
+<h2>Login Form</h2>
+
+<form ng-app = "signupapp" ng-controller = "signupcontroller" name = "signupform" align = "center">
+
+  <div name = "signupdiv "class="container">
+
+
+        <label><b>First Name</b></label> <br>
+        <input type="text" placeholder="Enter Firstname" ng-model="firstname" required> <br>
+        <span "signinform.signindiv.$invalid"></span>
+
+        <label><b>Last Name</b></label><br>
+        <input type="text" placeholder="Enter Lastname" ng-model="lastname" required><br>
+        <span "signinform.signindiv.$invalid"></span>
+
+        <label><b>Phone Number</b></label><br>
+        <input type="number" placeholder="Enter Phone Number" ng-model="phone" required><br>
+        <span "signinform.signindiv.$invalid"></span>
+
+        <label><b>E-mail Id</b></label> <br>
+        <input type="email" placeholder="Enter E-mail Id" ng-model="email" required> <br>
+        <span "signinform.signindiv.$invalid"></span>
+
+        <label><b>Password</b></label><br>
+        <input type="password" placeholder="Enter Password" ng-model="password" required><br><br>
+        <span "signinform.signindiv.$invalid"></span>
+
+        <button type="submit" ng-click = sendData()>Create Account</button>
+
+  </div>
+
+</body>
+
+</html>

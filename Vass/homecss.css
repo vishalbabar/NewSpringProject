@@ -1,0 +1,25 @@
+.divcls{
+    background-color:orange;
+	}
+.SearchBar {
+                top: 355px;
+                left: 575px;
+                height:30px;
+                width: 500px;
+            }
+.imgCls
+{
+	display: flex;
+}
+.divClass{
+	float:left;
+    padding:5px;
+}
+.menu{
+    height:35px;
+    width: 50px;
+}
+.divCls1
+{    
+	display: flex;
+}

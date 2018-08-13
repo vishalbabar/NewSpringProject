@@ -1,0 +1,107 @@
+<html ng-app="myApp">
+	<head>
+		<style type="text/css">
+		.cart{
+			background-color: #0066c0;
+			height: 80px;
+			padding-bottom: 20px;
+
+	}	
+		.cart3{
+			display: flex;
+			flex-direction: row;
+			background-color: white;
+			height: 270px;
+			width: "40%";
+			padding-right: 30px;
+			margin:4%;
+		}
+		.cart2{
+			background-color: white;
+			height: 30px;
+			padding-bottom: 20px;
+	}	
+	.class3{
+
+	padding: 20px;
+	margin: 1%;
+	}
+	.class4{
+		font-size: 20;
+		color: #0066c0;
+	}
+	.class5{
+		font-size: 15;
+	}
+	.class6{
+		color:red;
+		font-size: 15;
+	}
+	.class7{
+		text-decoration: underline;
+	}
+	.class8{
+		padding-top: 10px;
+	}
+	</style>
+	<script data-require="angular.js@1.2.7" data-semver="1.2.7" src="http://code.angularjs.org/1.2.7/angular.js">
+		app.controller('ctrl', function ($scope) {
+			$scope.cols = 2;
+			$scope.number = 5;
+			$scope.getNumber = function(num) {
+				return new Array(num);   
+			}
+			$scope.user = 5;
+
+
+			$scope.add = function() {
+				$scope.user.push();
+			};
+		});
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('MainCtrl', function($scope) {
+			$scope.user = {
+				websites: [
+				{}
+				]
+			};
+			$scope.remove = function(index) {
+				$scope.user.websites.splice(index, 1);
+			};
+			$scope.add = function() {
+				$scope.user.websites.push({ });
+			};
+		});
+	</script>
+</head>
+<body>
+	<div class="cart">
+	</div>
+	<div class="cart12">
+		<form name="cartservice">
+			<div class="cart1"></div>
+			<div class="cart2"></div>
+			<div ng-app="myApp" ng-controller="MainCtrl" >
+	  <div class="input-append" ng-repeat="website in user.websites">
+	  	<div   class="cart3" >
+	  		<table  width="100%" >
+	  			<div ><img class="" src="apple5s.png" width="280" height="200"></div>
+	  			<tr align="center">
+	  				<td class="class4"><a href="">Apple iPhone 6S (Gold, 32GB)</a></td>
+	  				<tr class="class5"align="center"><td >By Apple<td></tr>
+	  				<tr class="class6"align="center" ><td>$25000 </td></tr>
+	  				<tr align="center"><td><button class="btn btn-small" ng-click="add()">Add</button></td></tr>
+	  				
+	  				
+	  			</tr>
+	  		</table>
+	  	</div>
+	  </div>
+	</div>
+</form>
+</div>
+</body>
+</html>

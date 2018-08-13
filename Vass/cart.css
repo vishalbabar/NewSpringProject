@@ -1,0 +1,17 @@
+.cart{
+			background-color: navy;
+			height: 80px;
+			padding-bottom: 20px;
+
+	}	
+		.cart3{
+			display: flex;
+			flex-direction: row;
+			background-color: orange;
+			height: 70px;
+			width: "40%";
+			padding-right: 30px;
+			margin:4%;
+			
+			
+		}
