@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
 @Service
 public class ProductServiceImpl implements ProductService{
 
@@ -76,5 +78,70 @@ public class ProductServiceImpl implements ProductService{
         });
         return productDTOList;
     }
+
+
+    @Override
+    public List<ProductDTO> getAllProducts(){   // todo :: run and test
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        productRepository.findAll().forEach(productEntity -> {
+            ProductDTO productDTO = new ProductDTO();
+            BeanUtils.copyProperties(productEntity,productDTO);
+            productDTOList.add(productDTO);
+        });
+        return productDTOList;
+    }
+
+
+
+
+    public List<ProductDTO> welcomePageProducts(){
+        List<ProductDTO> productDTOList = getAllProducts();
+
+        // todo :: implement method
+
+        return productDTOList;
+
+    }
+
+
+    public double getpriceFromProdMerchantId(String productId, String merchantId){
+        ProductEntity productEntity = getProductEntity(productId);
+//        AtomicReference<Double> price = new AtomicReference<>((double) 0);
+//
+//        productEntity.getMerchantEntityList().forEach(merchantEntity ->{
+//            if(merchantEntity.getMerchantId().equals(merchantId)){
+//                price.set(merchantEntity.getPrice());
+//            }
+//        } );
+
+        List<MerchantEntity> merchantEntityList = new ArrayList<>();
+        productEntity.getMerchantEntityList().forEach(merchantEntity ->{
+            merchantEntityList.add(merchantEntity);
+        });
+        for (MerchantEntity merchantEntity: merchantEntityList){
+            if(merchantEntity.getMerchantId().equals(merchantId)){
+                return merchantEntity.getPrice();
+            }
+        }
+        return 0.0;
+
+    }
+
+    public String getMerchantName(String productId, String merchantId){
+        ProductEntity productEntity = getProductEntity(productId);
+
+        List<MerchantEntity> merchantEntityList = new ArrayList<>();
+        productEntity.getMerchantEntityList().forEach(merchantEntity ->{
+            merchantEntityList.add(merchantEntity);
+        });
+        for (MerchantEntity merchantEntity: merchantEntityList){
+            if(merchantEntity.getMerchantId().equals(merchantId)){
+                return merchantEntity.getMerchantId();
+            }
+        }
+        return "";
+
+    }
+
 
 }

@@ -12,4 +12,7 @@ public interface ProductService {
     public ProductEntity updateMerchantQuantity(String productId , String merchantId , int quantity);
     public List<ProductDTO> getAllByCategory(String producttype);
     public ProductDTO addMerchant(String productId, MerchantDTO merchantDTO);
+    public List<ProductDTO> getAllProducts();
+    public double getpriceFromProdMerchantId(String productId, String merchantId);
+    public String getMerchantName(String productId, String merchantId);
 }

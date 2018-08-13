@@ -101,7 +101,7 @@ public class MerchantServiceImpl implements MerchantService {
         Map<String,Double> merchantIdRank = new HashMap<String,Double>();
         List<Double> rankMerchant= new ArrayList<>();
         for (int i=0;i<merchantIdList.size() ;i++){
-            rankMerchant.add(i,priceListNormalised.get(i) +
+            rankMerchant.add(i,- priceListNormalised.get(i) +
                     productReviewListNormalised.get(i) +
                     numberOfProdNormalised.get(i) +
                     soldProdNormalised.get(i) +

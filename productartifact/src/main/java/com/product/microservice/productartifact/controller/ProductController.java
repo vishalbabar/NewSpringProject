@@ -10,14 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -29,6 +27,22 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.GET, value = "/get/{productId}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable("productId") String productId) {
         ProductDTO productDTO =  productService.getProduct(productId);
+//
+////       todo:: if merchant microservice is working
+//        List<String> merchantIdList = new ArrayList<>();
+//        List<Double> priceList = new ArrayList<>();
+//        List<Double> productReviewList = new ArrayList<>();
+//
+//        productDTO.getMerchantEntityList().forEach(merchant ->{
+//            merchantIdList.add(merchant.getMerchantId());
+//            priceList.add(merchant.getPrice());
+//            productReviewList.add(merchant.getProductRating());
+//        } );
+//
+//        // todo::call merchant microservice to display results.
+
+
+
         return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
     }
 
@@ -63,5 +77,35 @@ public class ProductController {
         productDTOList = productService.getAllByCategory(type);
         return new ResponseEntity<List<ProductDTO>>(productDTOList, HttpStatus.OK);
     }
+
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getAllProducts")
+    public ResponseEntity<List<ProductDTO>> getAllProducts(){
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        productDTOList = productService.getAllProducts();
+        return new ResponseEntity<List<ProductDTO>>(productDTOList, HttpStatus.OK);
+    }
+
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getmerchantprice/{productId}/{merchantId}")
+    public ResponseEntity<Double> getpriceFromProdMerchantId(@PathVariable String productId, @PathVariable String merchantId){
+        Double price = productService.getpriceFromProdMerchantId(productId,merchantId);
+        return new ResponseEntity<Double>(price,HttpStatus.OK);
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getmerchantname/{productId}/{merchantId}")
+    public ResponseEntity<String> getMerchantName(@PathVariable String productId, @PathVariable String merchantId){
+        String merchantName = productService.getMerchantName(productId,merchantId);
+        return new ResponseEntity<String>(merchantName,HttpStatus.OK);
+    }
+
+
+
+
+
+
 
 }

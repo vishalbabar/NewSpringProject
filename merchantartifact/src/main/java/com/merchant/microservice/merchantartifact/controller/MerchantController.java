@@ -45,10 +45,11 @@ public class MerchantController {
 
 //  todo::  deletemerchant code
 //
-    @RequestMapping(method = RequestMethod.PUT, value = "/getMerchantRanks/{merchantIdList}/{priceList}/{productReviewList}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/getMerchantRanks")
     public ResponseEntity<Map<String, Double>> rankMerchants(@RequestBody List<String> merchantIdList,
                                                              @RequestBody List<Double> priceList ,
-                                                             @RequestBody List<Double> productReviewList){
+                                                             @RequestBody List<Double> productReviewList
+                                                            ){
         Map<String,Double> merchantIdRank = merchantService.rankMerchants(merchantIdList,priceList,productReviewList);
         return new ResponseEntity<Map<String, Double>>(merchantIdRank,HttpStatus.OK);
     }
@@ -67,7 +68,7 @@ public class MerchantController {
 //        return null;
 //    }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getMerchantRanks")
+    @RequestMapping(method = RequestMethod.GET, value = "/getMerchantRankstest")
     public ResponseEntity<Map<String, Double>> rankMerchantsdata( ){
         List<String > merchantIdList = new ArrayList<>();
         List<Double > priceList = new ArrayList<>();
