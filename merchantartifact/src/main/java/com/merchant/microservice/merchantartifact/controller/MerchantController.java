@@ -2,7 +2,9 @@ package com.merchant.microservice.merchantartifact.controller;
 
 
 import com.merchant.microservice.merchantartifact.dto.MerchantDTO;
+import com.merchant.microservice.merchantartifact.dto.MerchantProduct;
 import com.merchant.microservice.merchantartifact.entity.MerchantEntity;
+import com.merchant.microservice.merchantartifact.entity.WrapperMerchantEntity;
 import com.merchant.microservice.merchantartifact.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/merchant")
+@CrossOrigin
 public class MerchantController {
 
     @Autowired
@@ -45,7 +48,7 @@ public class MerchantController {
 
 //  todo::  deletemerchant code
 //
-    @RequestMapping(method = RequestMethod.PUT, value = "/getMerchantRanks")
+    @RequestMapping(method = RequestMethod.PUT, value = "/getMerchantRanksError")
     public ResponseEntity<Map<String, Double>> rankMerchants(@RequestBody List<String> merchantIdList,
                                                              @RequestBody List<Double> priceList ,
                                                              @RequestBody List<Double> productReviewList
@@ -67,6 +70,22 @@ public class MerchantController {
 ////        return new ResponseEntity<Map<String, Double>>(merchantIdRank,HttpStatus.OK);
 //        return null;
 //    }
+
+    //todo : give request mapping
+    public ResponseEntity<List<MerchantProduct>> rankMerchantsagain(List<String> merchantIdList, List<Double> priceList , List<Double> productReviewList){
+        List<MerchantProduct> merchantProductList = new ArrayList<>();
+        merchantProductList = merchantService.rankMerchantsagain(merchantIdList,priceList,productReviewList);
+        return new ResponseEntity<List<MerchantProduct>>(merchantProductList,HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/getMerchantRanks")
+    public ResponseEntity<List<MerchantProduct>> rankMerchantsagainagain(@RequestBody List<WrapperMerchantEntity> wrapperMerchantEntityList){
+        List<MerchantProduct> merchantProductList = new ArrayList<>();
+        merchantProductList = merchantService.rankMerchantsagainagain(wrapperMerchantEntityList);
+        return new ResponseEntity<List<MerchantProduct>>(merchantProductList,HttpStatus.OK);
+    }
+
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/getMerchantRankstest")
     public ResponseEntity<Map<String, Double>> rankMerchantsdata( ){

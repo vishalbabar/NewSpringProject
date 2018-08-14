@@ -2,7 +2,9 @@ package com.product.microservice.productartifact.controller;
 
 
 import com.product.microservice.productartifact.dto.MerchantDTO;
+import com.product.microservice.productartifact.dto.MerchantProductWrapper;
 import com.product.microservice.productartifact.dto.ProductDTO;
+import com.product.microservice.productartifact.entity.MerchantEntity;
 import com.product.microservice.productartifact.entity.ProductEntity;
 import com.product.microservice.productartifact.service.ProductService;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,8 +105,50 @@ public class ProductController {
         return new ResponseEntity<String>(merchantName,HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/getmerchantentity/{productId}")
+    public ResponseEntity<List<MerchantEntity>> getMerchantEntityFromProductId(@PathVariable String productId){
+        List<MerchantEntity> merchantEntityList = productService.getMerchantEntityFromProductId(productId);
+        return new ResponseEntity<List<MerchantEntity>>(merchantEntityList,HttpStatus.OK);
+    }
 
 
+
+//
+    @RequestMapping(method = RequestMethod.GET, value = "/getmerchantwrapperlist/{productId}")
+    public ResponseEntity<List<MerchantProductWrapper>> getMerchantwrapperFromProductService(@PathVariable String productId){
+        RestTemplate restTemplate = new RestTemplate();
+        List<MerchantEntity> merchantEntityList = productService.getMerchantEntityFromProductId(productId);
+        List<MerchantProductWrapper> merchantProductWrapperList = new ArrayList<>();
+        String urlPost = "http://localhost:8081/merchant/getMerchantRanks";
+        merchantProductWrapperList = restTemplate.postForObject(urlPost,merchantEntityList,List.class);
+        return new ResponseEntity<List<MerchantProductWrapper>>(merchantProductWrapperList,HttpStatus.OK);
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getmerchantidlist/{productId}")
+    public ResponseEntity<List<String>> getMerchantIdList(@PathVariable String productId){
+        List<String> merchantIdList = productService.getMerchantIdList(productId);
+        return new ResponseEntity<List<String>>(merchantIdList,HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getmerchantpricelist/{productId}")
+    public ResponseEntity<List<Double>> getMerchantPriceList(@PathVariable String productId){
+        List<Double> merchantPriceList = productService.getMerchantPriceList(productId);
+        return new ResponseEntity<List<Double>>(merchantPriceList,HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getmerchantreviewlist/{productId}")
+    public ResponseEntity<List<Double>> getMerchantReviewList(@PathVariable String productId){
+
+        List<Double> merchantReviewList = productService.getMerchantReviewList(productId);
+        return new ResponseEntity<List<Double>>(merchantReviewList,HttpStatus.OK);
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getimagepath/{productId}")
+    public ResponseEntity<String> getImagePath(@PathVariable  String productId){
+        return  new ResponseEntity<String>(productService.getImagePath(productId),HttpStatus.OK);
+    }
 
 
 

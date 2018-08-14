@@ -1,7 +1,9 @@
 package com.merchant.microservice.merchantartifact.service;
 
 import com.merchant.microservice.merchantartifact.dto.MerchantDTO;
+import com.merchant.microservice.merchantartifact.dto.MerchantProduct;
 import com.merchant.microservice.merchantartifact.entity.MerchantEntity;
+import com.merchant.microservice.merchantartifact.entity.WrapperMerchantEntity;
 import com.merchant.microservice.merchantartifact.repository.MerchantRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +71,13 @@ public class MerchantServiceImpl implements MerchantService {
 
     private List<Double> convertToNormalisedList(List<Double> unNormalisedList){
         double total = unNormalisedList.stream().mapToDouble(Double::doubleValue).sum();
-        unNormalisedList.replaceAll(item -> item/total);
-        return unNormalisedList;
+        List<Double> normalisedList = new ArrayList<>();
+        unNormalisedList.forEach(item ->{
+            normalisedList.add(item/total);
+        });
+//        unNormalisedList.replaceAll(item -> item/total);
+//        return unNormalisedList;
+        return normalisedList;
     }
     @Override
     public Map<String, Double> rankMerchants(List<String> merchantIdList, List<Double> priceList , List<Double> productReviewList){
@@ -112,6 +119,157 @@ public class MerchantServiceImpl implements MerchantService {
         }
         return merchantIdRank;
     }
+
+
+    @Override
+    public List<MerchantProduct> rankMerchantsagain(List<String> merchantIdList, List<Double> priceList , List<Double> productReviewList){
+
+        int lengthoflist = merchantIdList.size();
+        if(lengthoflist==0){
+            List<MerchantProduct> merchantProductList =null;
+            return merchantProductList;
+        }
+        List<Double> numberOfProd = new ArrayList<>();
+        List<Double> soldProd =new ArrayList<>();
+        List<Double> stockofProd = new ArrayList<>();
+        List<Double> merchantRating =new ArrayList<>();
+        List<String> merchantLocation = new ArrayList<>();
+        List<String> merchantname = new ArrayList<>();
+
+        merchantIdList.forEach(merchantId ->{
+            MerchantEntity merchantEntity = getMerchantEntity(merchantId);
+            numberOfProd.add((double) merchantEntity.getProductCount());
+            soldProd.add((double) merchantEntity.getSoldQuantities());
+            stockofProd.add((double) merchantEntity.getAllStock());
+            merchantRating.add(merchantEntity.getMerchantRating());
+            merchantLocation.add(merchantEntity.getLocation());
+            merchantLocation.add(merchantEntity.getMerchantName());
+        });
+
+
+//        double priceTotal = priceList.stream().mapToDouble(Double::doubleValue).sum();
+//        priceList.replaceAll(price-> price/priceTotal);
+        List<Double> priceListNormalised = convertToNormalisedList(priceList);
+        List<Double> productReviewListNormalised = convertToNormalisedList(productReviewList);
+        List<Double> numberOfProdNormalised = convertToNormalisedList(numberOfProd);
+        List<Double> soldProdNormalised =convertToNormalisedList(soldProd);
+        List<Double> stockofProdNormalised = convertToNormalisedList(stockofProd);
+        List<Double> merchantRatingNormalised =convertToNormalisedList(merchantRating);
+
+        List<Double> rankMerchant= new ArrayList<>();
+        for (int i=0;i<lengthoflist ;i++){
+            rankMerchant.add(i,- priceListNormalised.get(i) +
+                    productReviewListNormalised.get(i) +
+                    numberOfProdNormalised.get(i) +
+                    soldProdNormalised.get(i) +
+                    stockofProdNormalised.get(i)+
+                    merchantRatingNormalised.get(i)
+            );
+
+        }
+        List<MerchantProduct> merchantProductList = new ArrayList<>();
+
+        for(int i=0;i<lengthoflist;i++){
+            int largest = 0;
+            for(int j=0;j<lengthoflist-i;j++){
+                if(rankMerchant.get(j)>rankMerchant.get(largest)){
+                    largest = j;
+                }
+                MerchantProduct merchantProduct = new MerchantProduct();
+                merchantProduct.setLocation(merchantLocation.get(largest));
+                merchantLocation.remove(largest);
+                merchantProduct.setMerchantName(merchantname.get(largest));
+                merchantLocation.remove(largest);
+                merchantProduct.setMerchantId(merchantIdList.get(largest));
+                merchantLocation.remove(largest);
+                merchantProduct.setPrice(priceList.get(largest));
+                priceList.remove(largest);
+                merchantProductList.add(merchantProduct);
+            }
+
+        }
+        return merchantProductList;
+
+    }
+
+    @Override
+    public List<MerchantProduct> rankMerchantsagainagain(List<WrapperMerchantEntity> wrapperMerchantEntityList){
+        int lengthoflist = wrapperMerchantEntityList.size();
+        if(lengthoflist==0){
+            List<MerchantProduct> merchantProductList =null;
+            return merchantProductList;
+        }
+        List<Double> priceList = new ArrayList<>();
+        List<Double> productReviewList =new ArrayList<>();
+        List<Double> numberOfProd = new ArrayList<>();
+        List<Double> soldProd =new ArrayList<>();
+        List<Double> stockofProd = new ArrayList<>();
+        List<Double> merchantRating =new ArrayList<>();
+        List<String> merchantLocation = new ArrayList<>();
+        List<String> merchantname = new ArrayList<>();
+        List<String> merchantIdList = new ArrayList<>();
+
+        wrapperMerchantEntityList.forEach(wrapperMerchantEntity ->{
+            MerchantEntity merchantEntity = getMerchantEntity(wrapperMerchantEntity.getMerchantId());
+            priceList.add(wrapperMerchantEntity.getPrice());
+            productReviewList.add(wrapperMerchantEntity.getProductRating());
+            numberOfProd.add((double) merchantEntity.getProductCount());
+            soldProd.add((double) merchantEntity.getSoldQuantities());
+            stockofProd.add((double) merchantEntity.getAllStock());
+            merchantRating.add(merchantEntity.getMerchantRating());
+            merchantLocation.add(merchantEntity.getLocation());
+            merchantname.add(merchantEntity.getMerchantName());
+            merchantIdList.add(merchantEntity.getMerchantId());
+        });
+
+
+//        double priceTotal = priceList.stream().mapToDouble(Double::doubleValue).sum();
+//        priceList.replaceAll(price-> price/priceTotal);
+        List<Double> priceListNormalised = convertToNormalisedList(priceList);
+        List<Double> productReviewListNormalised = convertToNormalisedList(productReviewList);
+        List<Double> numberOfProdNormalised = convertToNormalisedList(numberOfProd);
+        List<Double> soldProdNormalised =convertToNormalisedList(soldProd);
+        List<Double> stockofProdNormalised = convertToNormalisedList(stockofProd);
+        List<Double> merchantRatingNormalised =convertToNormalisedList(merchantRating);
+
+        List<Double> rankMerchant= new ArrayList<>();
+        for (int i=0;i<lengthoflist ;i++){
+            rankMerchant.add(i,- priceListNormalised.get(i) +
+                    productReviewListNormalised.get(i) +
+                    numberOfProdNormalised.get(i) +
+                    soldProdNormalised.get(i) +
+                    stockofProdNormalised.get(i)+
+                    merchantRatingNormalised.get(i)
+            );
+
+        }
+        List<MerchantProduct> merchantProductList = new ArrayList<>();
+
+        for(int i=0;i<lengthoflist;i++){
+            int largest = 0;
+            for(int j=0;j<lengthoflist-i;j++) {
+                if (rankMerchant.get(j) > rankMerchant.get(largest)) {
+                    largest = j;
+                }
+            }
+                MerchantProduct merchantProduct = new MerchantProduct();
+                merchantProduct.setLocation(merchantLocation.get(largest));
+                merchantLocation.remove(largest);
+                merchantProduct.setMerchantName(merchantname.get(largest));
+                merchantname.remove(largest);
+                merchantProduct.setMerchantId(merchantIdList.get(largest));
+                merchantIdList.remove(largest);
+                merchantProduct.setPrice(priceList.get(largest));
+                priceList.remove(largest);
+                merchantProduct.setReview(productReviewList.get(largest));
+                productReviewList.remove(largest);
+                merchantProductList.add(merchantProduct);
+
+
+        }
+        return merchantProductList;
+    }
+
 
         @Override
     public MerchantEntity updateMerchantStock(String merchantId , int quantity){

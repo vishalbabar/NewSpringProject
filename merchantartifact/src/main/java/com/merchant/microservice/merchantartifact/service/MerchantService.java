@@ -1,7 +1,9 @@
 package com.merchant.microservice.merchantartifact.service;
 
 import com.merchant.microservice.merchantartifact.dto.MerchantDTO;
+import com.merchant.microservice.merchantartifact.dto.MerchantProduct;
 import com.merchant.microservice.merchantartifact.entity.MerchantEntity;
+import com.merchant.microservice.merchantartifact.entity.WrapperMerchantEntity;
 
 
 import java.util.List;
@@ -17,4 +19,7 @@ public interface MerchantService {
 
     public  MerchantEntity updateMerchantStock(String merchantId, int quantity);
     public Map<String, Double> rankMerchants(List<String> merchantIdList, List<Double> priceList , List<Double> productReviewList);
+    public List<MerchantProduct> rankMerchantsagain(List<String> merchantIdList, List<Double> priceList , List<Double> productReviewList);
+
+    public  List<MerchantProduct> rankMerchantsagainagain(List<WrapperMerchantEntity> wrapperMerchantEntityList);
 }

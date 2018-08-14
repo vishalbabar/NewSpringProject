@@ -11,11 +11,21 @@ public class ProductDTO {
     private String productId;
     private String name;
     private String description;
+    private String imagepath;
     private String type;
-    private String rating;
+
     private Map<String, String> attributes = new HashMap<String, String>();
 
     private  List<MerchantDTO> merchantEntityList;
+
+
+    public String getImagepath() {
+        return imagepath;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
+    }
 
     public List<MerchantDTO> getMerchantEntityList() {
         return merchantEntityList;
@@ -57,13 +67,6 @@ public class ProductDTO {
         this.type = type;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
 
     public Map<String, String> getAttributes() {
         return attributes;
@@ -80,7 +83,6 @@ public class ProductDTO {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
-                ", rating='" + rating + '\'' +
                 ", attributes=" + attributes +
                 ", merchantEntityList=" + merchantEntityList +
                 '}';

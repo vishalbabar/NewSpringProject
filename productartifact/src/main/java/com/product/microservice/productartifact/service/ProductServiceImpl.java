@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -136,12 +135,70 @@ public class ProductServiceImpl implements ProductService{
         });
         for (MerchantEntity merchantEntity: merchantEntityList){
             if(merchantEntity.getMerchantId().equals(merchantId)){
-                return merchantEntity.getMerchantId();
+                return merchantEntity.getMerchantName();
             }
         }
         return "";
 
     }
+
+
+    public List<MerchantEntity> getMerchantEntityFromProductId(String productId){
+        ProductEntity productEntity = getProductEntity(productId);
+
+        List<MerchantEntity> merchantEntityList = new ArrayList<>();
+        productEntity.getMerchantEntityList().forEach(merchantEntity ->{
+            merchantEntityList.add(merchantEntity);
+        });
+        return merchantEntityList;
+    }
+
+
+    public List<String> getMerchantIdList(String productId){
+        List<String> merchantIdList = new ArrayList<>();
+
+        List<MerchantEntity> merchantEntityList = getMerchantEntityFromProductId(productId);
+        for (MerchantEntity merchantEntity: merchantEntityList){
+            merchantIdList.add(merchantEntity.getMerchantId());
+
+        }
+        return merchantIdList;
+
+    }
+
+
+    public List<Double> getMerchantPriceList(String productId){
+        List<Double> merchantPriceList = new ArrayList<>();
+
+        List<MerchantEntity> merchantEntityList = getMerchantEntityFromProductId(productId);
+        for (MerchantEntity merchantEntity: merchantEntityList){
+            merchantPriceList.add(merchantEntity.getPrice());
+
+        }
+        return merchantPriceList;
+
+    }
+
+
+    public List<Double> getMerchantReviewList(String productId){
+        List<Double> merchantReviewList = new ArrayList<>();
+
+        List<MerchantEntity> merchantEntityList = getMerchantEntityFromProductId(productId);
+        for (MerchantEntity merchantEntity: merchantEntityList){
+            merchantReviewList.add(merchantEntity.getProductRating());
+
+        }
+        return merchantReviewList;
+
+    }
+
+    public  String getImagePath(String productId){
+        ProductEntity productEntity = getProductEntity(productId);
+        String imagepath = productEntity.getImagepath();
+        return imagepath;
+    }
+
+
 
 
 }
