@@ -99,6 +99,12 @@ public class ProductController {
     }
 
 
+    @RequestMapping(method = RequestMethod.GET, value = "/getproductname/{productId}")
+    public ResponseEntity<Object> getproductName(@PathVariable String productId){
+        String productName = productService.getProductName(productId);
+        return new ResponseEntity<Object>(productName,HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/getmerchantname/{productId}/{merchantId}")
     public ResponseEntity<String> getMerchantName(@PathVariable String productId, @PathVariable String merchantId){
         String merchantName = productService.getMerchantName(productId,merchantId);

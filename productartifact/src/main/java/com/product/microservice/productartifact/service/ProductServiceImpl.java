@@ -142,6 +142,12 @@ public class ProductServiceImpl implements ProductService{
 
     }
 
+    public String getProductName(String productId){
+        ProductEntity productEntity = getProductEntity(productId);
+        return productEntity.getName();
+
+    }
+
 
     public List<MerchantEntity> getMerchantEntityFromProductId(String productId){
         ProductEntity productEntity = getProductEntity(productId);

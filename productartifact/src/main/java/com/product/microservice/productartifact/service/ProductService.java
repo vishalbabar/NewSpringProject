@@ -22,4 +22,5 @@ public interface ProductService {
     public List<Double> getMerchantReviewList(String productId);
 
     public  String getImagePath(String productId);
+    public String getProductName(String productId);
 }
